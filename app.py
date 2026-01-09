@@ -10,7 +10,7 @@ from faster_whisper import WhisperModel
 
 # ---- Load Whisper model once ----
 model = WhisperModel(
-    "base",            # change if you want
+    "large-v3",          
     device="cpu",
     compute_type="int8"
 )
@@ -36,6 +36,25 @@ def choose_folder():
     if folder:
         save_dir.set(folder)
 
+def start_transcription(file_path: str):
+    file_path = file_path.strip().strip("{}").strip()
+
+    if not file_path.lower().endswith(SUPPORTED_EXTS):
+        status.set("Unsupported file type")
+        return
+
+    if not os.path.exists(file_path):
+        status.set("File not found")
+        return
+
+    # hide the "new transcription" button whenever a new job starts
+    refresh_btn.pack_forget()
+
+    threading.Thread(
+        target=transcribe,
+        args=(file_path,),
+        daemon=True
+    ).start()
 
 def transcribe(file_path):
     safe_set(status, "Transcribing...")
@@ -76,40 +95,40 @@ def transcribe(file_path):
 
     finally:
         stop_spinner()
+        app.after(0, lambda: refresh_btn.pack(pady=(15,5)))
 
 
 def on_drop(event):
-    # Windows drag/drop gives braces sometimes
-    file_path = event.data.strip().strip("{}").strip()
+    file_path = event.data
 
-    # Sometimes TkDnD can pass multiple files; take the first one.
-    # (Common format: "{file1} {file2}")
-    if " " in file_path and file_path.count(".") > 1 and not os.path.exists(file_path):
-        # naive split fallback; if you want robust multi-file parsing, we can add it
-        file_path = file_path.split(" ")[0].strip("{}")
+    # If multiple files are dropped, take the first one (simple handling)
+    # TkDnD often formats this like: "{file1} {file2}"
+    if file_path.startswith("{") and "} " in file_path:
+        file_path = file_path.split("} ")[0] + "}"
 
-    if not file_path.lower().endswith(SUPPORTED_EXTS):
-        status.set("Unsupported file type")
-        return
+    start_transcription(file_path)
 
-    if not os.path.exists(file_path):
-        status.set("File not found")
-        return
+def on_click_label(event=None):
+    file_path = filedialog.askopenfilename(
+        title="Select audio file",
+        filetypes=[
+            ("Audio files", "*.wav *.mp3 *.m4a *.flac"),
+            ("All files", "*.*"),
+        ],
+    )
+    if file_path:
+        start_transcription(file_path)
 
-    # Run transcription in background thread
-    threading.Thread(
-        target=transcribe,
-        args=(file_path,),
-        daemon=True
-    ).start()
-
+def reset_ui():
+    status.set("Select OR Drag & drop an audio file here")
+    refresh_btn.pack_forget()
 
 # ---- UI ----
 app = TkinterDnD.Tk()
 app.title("Whisper Audio Transcriber")
 app.geometry("520x260")
 
-status = StringVar(value="Drag & drop an audio file here")
+status = StringVar(value="Select OR Drag & drop an audio file here")
 save_dir = StringVar(value="")  # empty means “same as audio file folder”
 
 # Top controls
@@ -128,6 +147,12 @@ label = Label(
     height=6
 )
 label.pack(padx=20, pady=(5, 10))
+label.bind("<Button-1>", on_click_label)
+label.configure(cursor="hand2")  # makes it feel clickable (optional)
+
+refresh_btn = Button(app, text="Create New Transctiption", command=reset_ui)
+refresh_btn.pack(pady=(15, 5))
+refresh_btn.pack_forget()
 
 label.drop_target_register(DND_FILES)
 label.dnd_bind("<<Drop>>", on_drop)
