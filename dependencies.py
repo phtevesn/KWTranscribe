@@ -6,4 +6,8 @@ faster-whisper
 tkinterdnd2
 reportlab
 python-docx
+
+pyinstaller
+
+PySide6
 '''
