@@ -44,7 +44,6 @@ hf_cache/
 *.ogg
 
 # Generated transcripts
-*.txt
 *.vtt
 *.srt
 *.json
