@@ -16,17 +16,15 @@ def valid_filetype(file_path: str):
     
     return True
 
-def create_out_file_path(file_path: str, new_out_dir:str, out_filetype: str):
+def create_out_file_path(file_paths, new_out_dir:str, out_filetype: str):
+    file_path = file_paths[0]
     out_dir = os.path.dirname(file_path)
     base_name = os.path.splitext(os.path.basename(file_path))[0]
     if new_out_dir:
         out_dir = new_out_dir
 
     out_path = os.path.join(out_dir, base_name+out_filetype)
-    '''
-    if os.path.exists(out_path):
-        return None
-    '''
+
     return out_path
     
 def to_txt(segments, output_file: str):
@@ -50,8 +48,6 @@ def to_pdf(segments, output_file: str):
     line_height = 14
 
     y = height - top
-
-    # rough wrap width: characters per line (depends on font)
     max_chars = 95
 
     for seg in segments:
@@ -67,7 +63,6 @@ def to_pdf(segments, output_file: str):
 
 
 def to_docx(segments, output_file: str):
-    from docx import Document
 
     doc = Document()
     for seg in segments:

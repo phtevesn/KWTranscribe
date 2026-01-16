@@ -8,6 +8,5 @@ reportlab
 python-docx
 
 pyinstaller
-
-PySide6
+huggingface_hub
 '''

@@ -8,11 +8,16 @@ def load_model(model_size: str, hw: str, ctype: str ):
     model = WhisperModel(model_path, device=hw, compute_type=ctype)
     return model
 
-def transcribe(model: WhisperModel, file_path: str):
-    segments, info = model.transcribe(
-        file_path, 
-        language = "en", 
-        beam_size = 5
-    )
-    return segments, info
-
+def transcribe(model: WhisperModel, files):
+    files = list(files)
+    files.sort()
+    
+    all_segments: list = []
+    for file in files:
+        segments, info = model.transcribe(
+            file, 
+            language = "en", 
+            beam_size = 5
+        )
+        all_segments.extend(segments)
+    return all_segments

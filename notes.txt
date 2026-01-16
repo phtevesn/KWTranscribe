@@ -1,8 +1,8 @@
-Implementing using model locally
+✔ Implementing using model locally 
 
-Transcribing multiple fies into one file
+✔ Transcribing multiple fies into one file
 
-Being able to change the currently used model
+✔ Being able to change the currently used model
 
 -------If time--------
 
