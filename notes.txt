@@ -8,8 +8,10 @@
 
 X Doing multiple transcriptions at once (queue)
 
-Changing font size
+✔ Changing font size
 
-Transcribing videos with ffmpeg
+X Transcribing videos with ffmpeg
 
-json file to store stuff maybe
+X json file to store stuff maybe   
+    email
+    model 

@@ -153,6 +153,7 @@ def on_transcription_error(e):
 def reset_ui():
     t_refresh_btn.pack_forget()
     in_file_path.set("")
+    save_dir.set("")
     status.set("Select OR Drag & drop an audio files here")
     t_frame.pack_forget()
     home_frame.pack(fill="x", padx=12, pady=12)
