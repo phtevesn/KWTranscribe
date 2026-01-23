@@ -34,10 +34,7 @@ app.files = None
 app.size = 14
 default_font = font.nametofont("TkDefaultFont")
 default_font.configure(size = app.size)
-<<<<<<< HEAD
 app.iconbitmap(resource_path("kwlogo.ico"))
-=======
->>>>>>> a0a30403350fb05773e21c1649357a142431a6d7
 #--Handlers--
 def on_submit():
     selected_size = model_size.get()
