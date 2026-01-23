@@ -1,5 +1,5 @@
 
-import os
+import os, sys
 import threading
 from tkinter import Label as TkLabel, StringVar, Button as TkButton, font
 from tkinter import filedialog
@@ -22,6 +22,9 @@ from text.filetype_service import (
     handle_filetype
 )
 
+def resource_path(rel):
+    return os.path.join(getattr(sys, "_MEIPASS", os.path.abspath(".")), rel)
+
 model = None 
 app = TkinterDnD.Tk()
 app.title("KW Transcribe")
@@ -31,7 +34,7 @@ app.files = None
 app.size = 14
 default_font = font.nametofont("TkDefaultFont")
 default_font.configure(size = app.size)
-app.iconbitmap("kwlogo.ico")
+app.iconbitmap(resource_path("kwlogo.ico"))
 #--Handlers--
 def on_submit():
     selected_size = model_size.get()
