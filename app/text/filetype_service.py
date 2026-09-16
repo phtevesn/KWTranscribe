@@ -4,7 +4,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from docx import Document
 
-from spot import SUPPORTED_EXTS, FILETYPES
+from app.types import SUPPORTED_EXTS, FILETYPES
 
 def valid_filetype(file_path: str):
     file_path = file_path.strip().strip("{}").strip()

@@ -11,12 +11,12 @@ from tkinterdnd2 import DND_FILES, TkinterDnD
 
 from faster_whisper import WhisperModel
 
-from spot import (
+from app.types import (
     MODEL_SIZES, C_TYPE, HW, FILETYPES,
     MIN_FONT, MAX_FONT
 )
-from text.whisper_service import load_model, transcribe
-from text.filetype_service import (
+from app.text.whisper_service import load_model, transcribe
+from app.text.filetype_service import (
     valid_filetype, 
     create_out_file_path,
     handle_filetype
