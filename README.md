@@ -19,12 +19,12 @@ Local Windows 11 desktop application for transcribing audio files using
 
 2. Create and activate virtual environment:
    ```bash
-   py -3.11.9 -m  venv .venv
-   .venv\Scripts\activate.bat
+   py -3.11 -m  venv .venv
+   .\.venv\Scripts\activate.bat
 
 3. Install dependencies:
    ```bash
-   pip install requirements.txt
+   python -m pip install -r .\dependencies.txt
 
 4. Install faster-whisper models from hugging face:
    ```bash
